@@ -540,7 +540,7 @@ body {
     padding: 20px;
     border-radius: 8px;
     border-left: 4px solid #0066cc;
-    margin: 20px 0;
+    margin: 15px 0;
 }
 
 .highlight-box h5 {
@@ -716,7 +716,7 @@ body {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    margin: 20px 0;
+    margin: 15px 0;
     padding: 20px;
     background: #f8f9fa;
     border-radius: 8px;
@@ -823,6 +823,14 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+/* AdSense Responsive Styles */
+.adsbygoogle {
+    margin: 0;
+    display: block !important;
+}
+
+
 
 /* Advertisement Label (Optional) */
 .ad-section::before {
@@ -1416,17 +1424,13 @@ body {
     
     .ad-container-horizontal {
         width: 100%;
-        max-width: 100%;
+        max-width: 320px;
         margin: 0 auto;
     }
     
-    /* Reduce spacing between ads and content on mobile */
-    .comparison-section {
-        margin: 15px 0;
-    }
-    
-    .section-title {
-        margin-bottom: 20px;
+    .adsbygoogle {
+        width: 300px !important;
+        height: 250px !important;
     }
 
     .main-title {
@@ -1558,12 +1562,6 @@ body {
     .section-title {
         font-size: 24px;
         line-height: 1.2;
-        margin-bottom: 15px;
-    }
-    
-    /* Further reduce spacing on very small screens */
-    .comparison-section {
-        margin: 10px 0;
     }
     
     /* 隐藏整个表格容器，显示卡片式布局 */
