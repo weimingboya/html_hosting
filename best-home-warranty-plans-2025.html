@@ -2268,15 +2268,111 @@ body {
     border-right: 8px solid transparent;
     border-top: 8px solid #333;
 }
-    </style>
+
+/* ======= ADDED: Breadcrumb and Back-to-Top Styles ======= */
+/* Sticky breadcrumb styles - default position at top left */
+.breadcrumb-fixed {
+    position: fixed;
+    top: 20px; /* Default position at top left corner */
+    left: 20px;
+    z-index: 999; /* Below sticky ad but above other content */
+    background: rgba(255, 255, 255, 0.6); /* More transparent background */
+    padding: 8px 16px;
+    border-radius: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px); /* Slightly less blur for better text visibility */
+    font-size: 14px;
+    font-weight: 500;
+    transition: top 0.3s ease;
+}
+
+.breadcrumb-fixed a {
+    color: #333; /* Darker color for better readability on transparent background */
+    text-decoration: none;
+    transition: color 0.3s ease;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8); /* Subtle text shadow for better contrast */
+}
+
+.breadcrumb-fixed a:hover {
+    color: #007bff;
+}
+
+/* Back to top button styles */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 120px; /* Move higher to be well above cookie banner */
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000; /* Higher z-index to appear above cookie banner */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+    font-size: 0;
+}
+
+.back-to-top-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.back-to-top-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .breadcrumb-fixed {
+        top: 170px; /* Mobile position below sticky ad with more spacing */
+        left: 10px;
+        right: 10px;
+        padding: 6px 12px;
+        font-size: 12px;
+        text-align: center;
+    }
+    
+    .back-to-top-btn {
+        bottom: 100px; /* Move higher on mobile to be above cookie banner */
+        right: 20px;
+        width: 45px;
+        height: 45px;
+    }
+    
+    .back-to-top-btn svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* Additional responsive breadcrumb positioning */
+@media (max-width: 768px) {
+    .breadcrumb-fixed.mobile-top {
+        top: 10px !important;
+    }
+    
+    .breadcrumb-fixed.mobile-below-ad {
+        top: 170px !important;
+    }
+}    </style>
 </head>
 <body>
-    <!-- Header -->
+    <!-- ======= ADDED: Fixed Breadcrumb ======= -->
+    <!-- Breadcrumb positioned as fixed overlay -->
+    <nav class="breadcrumb-fixed">
+        <a href="https://www.best10trendings.com/">Home</a> > <a href="https://www.best10trendings.com/list/deepsearch">Business Research</a> > Best Home Warranty Plans 2025
+    </nav>    <!-- Header -->
     <header class="header">
         <div class="container">
-            <nav class="breadcrumb">
-                <a href="https://www.best10trendings.com/">Home</a> > <a href="https://www.best10trendings.com/list/deepsearch">Business Research</a> > Home Warranty
-            </nav>
+            <!-- Original breadcrumb removed - now using fixed breadcrumb -->
             
             <h1 class="main-title">Best Home Warranty Plans 2025</h1>
             
@@ -5257,6 +5353,13 @@ body {
         </div>
     </footer>
 
+    <!-- ======= ADDED: Back to Top Button ======= -->
+    <!-- Back to Top Button -->
+    <button id="back-to-top" class="back-to-top-btn" onclick="scrollToTop()" style="display: none;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7 14L12 9L17 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+    </button>
     <script>
         // Cookie Management Functions
         const COOKIE_KEY = "startopic_cookie_consent";
@@ -5297,7 +5400,86 @@ body {
         }
         
         // Initialize cookie banner on page load
-        document.addEventListener('DOMContentLoaded', function() {
+
+        // ======= ADDED: Breadcrumb and Back-to-Top JavaScript =======
+        // Back to Top functionality
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        function handleBackToTopVisibility() {
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        }
+        
+        function handleBreadcrumbPosition() {
+            const breadcrumb = document.querySelector('.breadcrumb-fixed');
+            const stickyAd = document.getElementById('sticky-ad-container');
+            
+            if (!breadcrumb || !stickyAd) return;
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const isAdSticky = stickyAd.style.position === 'fixed';
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isAdSticky) {
+                // Ad is sticky, position breadcrumb below it
+                if (isMobile) {
+                    breadcrumb.style.top = '170px'; // Mobile: larger gap
+                    breadcrumb.classList.add('mobile-below-ad');
+                    breadcrumb.classList.remove('mobile-top');
+                } else {
+                    breadcrumb.style.top = '180px'; // Desktop: 140px ad height + 40px gap
+                }
+            } else {
+                // Ad is not sticky, position breadcrumb at top (default position)
+                if (isMobile) {
+                    breadcrumb.style.top = '10px';
+                    breadcrumb.classList.add('mobile-top');
+                    breadcrumb.classList.remove('mobile-below-ad');
+                } else {
+                    breadcrumb.style.top = '20px'; // Back to default top position
+                }
+            }
+        }
+        
+        function initializeBreadcrumbPosition() {
+            const breadcrumb = document.querySelector('.breadcrumb-fixed');
+            const isMobile = window.innerWidth <= 768;
+            
+            if (!breadcrumb) return;
+            
+            // Initialize breadcrumb at top position on page load
+            if (isMobile) {
+                breadcrumb.style.top = '10px';
+                breadcrumb.classList.add('mobile-top');
+                breadcrumb.classList.remove('mobile-below-ad');
+            } else {
+                breadcrumb.style.top = '20px';
+            }
+        }        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Initialize breadcrumb position
+            initializeBreadcrumbPosition();
+            
+            // Add scroll listeners
+            window.addEventListener('scroll', function() {
+                handleBackToTopVisibility();
+                handleBreadcrumbPosition();
+            });
+            
+            // Add resize listener for responsive breadcrumb positioning
+            window.addEventListener('resize', function() {
+                initializeBreadcrumbPosition();
+                handleBreadcrumbPosition();
+            });
             if (!getCookie(COOKIE_KEY)) {
                 document.getElementById('cookieBanner').style.display = 'flex';
                 document.getElementById('cookiePlaceholder').style.display = 'block';
@@ -5472,7 +5654,86 @@ body {
         }
 
         // Initialize all View More buttons
-        document.addEventListener('DOMContentLoaded', function() {
+
+        // ======= ADDED: Breadcrumb and Back-to-Top JavaScript =======
+        // Back to Top functionality
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+        
+        function handleBackToTopVisibility() {
+            const backToTopBtn = document.getElementById('back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        }
+        
+        function handleBreadcrumbPosition() {
+            const breadcrumb = document.querySelector('.breadcrumb-fixed');
+            const stickyAd = document.getElementById('sticky-ad-container');
+            
+            if (!breadcrumb || !stickyAd) return;
+            
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const isAdSticky = stickyAd.style.position === 'fixed';
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isAdSticky) {
+                // Ad is sticky, position breadcrumb below it
+                if (isMobile) {
+                    breadcrumb.style.top = '170px'; // Mobile: larger gap
+                    breadcrumb.classList.add('mobile-below-ad');
+                    breadcrumb.classList.remove('mobile-top');
+                } else {
+                    breadcrumb.style.top = '180px'; // Desktop: 140px ad height + 40px gap
+                }
+            } else {
+                // Ad is not sticky, position breadcrumb at top (default position)
+                if (isMobile) {
+                    breadcrumb.style.top = '10px';
+                    breadcrumb.classList.add('mobile-top');
+                    breadcrumb.classList.remove('mobile-below-ad');
+                } else {
+                    breadcrumb.style.top = '20px'; // Back to default top position
+                }
+            }
+        }
+        
+        function initializeBreadcrumbPosition() {
+            const breadcrumb = document.querySelector('.breadcrumb-fixed');
+            const isMobile = window.innerWidth <= 768;
+            
+            if (!breadcrumb) return;
+            
+            // Initialize breadcrumb at top position on page load
+            if (isMobile) {
+                breadcrumb.style.top = '10px';
+                breadcrumb.classList.add('mobile-top');
+                breadcrumb.classList.remove('mobile-below-ad');
+            } else {
+                breadcrumb.style.top = '20px';
+            }
+        }        document.addEventListener('DOMContentLoaded', function() {
+            
+            // Initialize breadcrumb position
+            initializeBreadcrumbPosition();
+            
+            // Add scroll listeners
+            window.addEventListener('scroll', function() {
+                handleBackToTopVisibility();
+                handleBreadcrumbPosition();
+            });
+            
+            // Add resize listener for responsive breadcrumb positioning
+            window.addEventListener('resize', function() {
+                initializeBreadcrumbPosition();
+                handleBreadcrumbPosition();
+            });
             // Initialize sticky ad
             initializeStickyAd();
             
